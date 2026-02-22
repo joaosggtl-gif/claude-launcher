@@ -47,6 +47,10 @@
                      {
                          "name":  "Full amazon project",
                          "path":  "/home/hike-/ClaudeProjects/Full amazon project"
+                     },
+                     {
+                         "name":  "agente",
+                         "path":  "/home/hike-/ClaudeProjects/agente"
                      }
                  ]
 }

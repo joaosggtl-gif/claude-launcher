@@ -186,7 +186,7 @@ $btnAdd.Add_Click({
     $nameForm.Controls.Add($txtName)
 
     $lbl2 = New-Object System.Windows.Forms.Label
-    $lbl2.Text = "Caminho WSL (ex: /home/hike-/meu-projeto):"
+    $lbl2.Text = "Caminho WSL (gerado automaticamente):"
     $lbl2.Location = New-Object System.Drawing.Point(15, 78)
     $lbl2.Size = New-Object System.Drawing.Size(370, 25)
     $nameForm.Controls.Add($lbl2)
@@ -195,9 +195,15 @@ $btnAdd.Add_Click({
     $txtPath.Location = New-Object System.Drawing.Point(15, 105)
     $txtPath.Size = New-Object System.Drawing.Size(370, 28)
     $txtPath.BackColor = [System.Drawing.Color]::FromArgb(39, 39, 42)
-    $txtPath.ForeColor = [System.Drawing.Color]::White
+    $txtPath.ForeColor = [System.Drawing.Color]::FromArgb(180, 180, 180)
     $txtPath.Font = New-Object System.Drawing.Font("Segoe UI", 11)
+    $txtPath.Text = "$wslProjectsDir/"
     $nameForm.Controls.Add($txtPath)
+
+    # Auto-fill path as user types the project name
+    $txtName.Add_TextChanged({
+        $txtPath.Text = "$wslProjectsDir/$($txtName.Text.Trim())"
+    })
 
     $btnOK = New-Object System.Windows.Forms.Button
     $btnOK.Text = "Salvar"
@@ -220,16 +226,16 @@ $btnAdd.Add_Click({
         } else {
             $wslTest = wsl.exe -d Ubuntu -- test -d "$newPath" 2>$null
             if ($LASTEXITCODE -ne 0) {
-                [System.Windows.Forms.MessageBox]::Show("Pasta nao encontrada: $newPath`nVerifique se o caminho existe no WSL.", "Erro", "OK", "Error")
-            } else {
-                $newProject = [PSCustomObject]@{
-                    name = $txtName.Text.Trim()
-                    path = $newPath
-                }
-                [void]$script:projects.Add($newProject)
-                Save-Projects
-                Refresh-List
+                wsl.exe -d Ubuntu -- mkdir -p "$newPath" 2>$null
+                wsl.exe -d Ubuntu -- bash -c "cd '$newPath' && git init" 2>$null
             }
+            $newProject = [PSCustomObject]@{
+                name = $txtName.Text.Trim()
+                path = $newPath
+            }
+            [void]$script:projects.Add($newProject)
+            Save-Projects
+            Refresh-List
         }
     }
     $nameForm.Dispose()
