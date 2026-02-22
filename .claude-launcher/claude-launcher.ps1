@@ -2,8 +2,10 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
 # --- Config ---
-$configPath = "\\wsl$\Ubuntu\home\hike-\.claude-launcher\projects.json"
-$projectsDir = "\\wsl$\Ubuntu\home\hike-\ClaudeProjects"
+# Support both \\wsl$ and \\wsl.localhost paths
+$wslRoot = if (Test-Path "\\wsl.localhost\Ubuntu") { "\\wsl.localhost\Ubuntu" } else { "\\wsl$\Ubuntu" }
+$configPath = "$wslRoot\home\hike-\.claude-launcher\projects.json"
+$projectsDir = "$wslRoot\home\hike-\ClaudeProjects"
 $wslProjectsDir = "/home/hike-/ClaudeProjects"
 $script:projects = New-Object System.Collections.ArrayList
 
@@ -210,7 +212,7 @@ $btnAdd.Add_Click({
         if (-not $newPath.StartsWith("/")) {
             [System.Windows.Forms.MessageBox]::Show("O caminho deve ser absoluto (comecar com /).`nExemplo: /home/hike-/meu-projeto", "Erro", "OK", "Error")
         } else {
-            $wslCheck = "\\wsl$\Ubuntu" + ($newPath -replace "/", "\")
+            $wslCheck = "$wslRoot" + ($newPath -replace "/", "\")
             if (-not (Test-Path $wslCheck)) {
                 [System.Windows.Forms.MessageBox]::Show("Pasta nao encontrada: $newPath`nVerifique se o caminho existe no WSL.", "Erro", "OK", "Error")
             } else {
@@ -261,7 +263,7 @@ $btnLaunch.Add_Click({
             [System.Windows.Forms.MessageBox]::Show("Caminho invalido (nao e absoluto): $projPath`nRemova e adicione o projeto novamente.", "Erro", "OK", "Error")
             return
         }
-        $wslPath = "\\wsl$\Ubuntu" + ($projPath -replace "/", "\")
+        $wslPath = "$wslRoot" + ($projPath -replace "/", "\")
         if (-not (Test-Path $wslPath)) {
             [System.Windows.Forms.MessageBox]::Show("Pasta nao encontrada: $projPath`nVerifique se o projeto existe no WSL.", "Erro", "OK", "Error")
             return
