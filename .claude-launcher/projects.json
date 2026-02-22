@@ -1,0 +1,44 @@
+﻿{
+    "projects":  [
+                     {
+                         "name":  "amazon",
+                         "path":  "/home/hike-/ClaudeProjects/amazon"
+                     },
+                     {
+                         "name":  "Validation app",
+                         "path":  "/home/hike-/ClaudeProjects/Validation app"
+                     },
+                     {
+                         "name":  "Finance pro",
+                         "path":  "/home/hike-/ClaudeProjects/Finance pro"
+                     },
+                     {
+                         "name":  "Health tracker",
+                         "path":  "/home/hike-/ClaudeProjects/Health tracker"
+                     },
+                     {
+                         "name":  "Driver list",
+                         "path":  "/home/hike-/ClaudeProjects/Driver list"
+                     },
+                     {
+                         "name":  "Van List 2026",
+                         "path":  "/home/hike-/ClaudeProjects/Van List 2026"
+                     },
+                     {
+                         "name":  "Vans maintanence",
+                         "path":  "/home/hike-/ClaudeProjects/Vans maintanence"
+                     },
+                     {
+                         "name":  "MJ research labs",
+                         "path":  "/home/hike-/ClaudeProjects/MJ research labs"
+                     },
+                     {
+                         "name":  "Claude",
+                         "path":  "/home/hike-/ClaudeProjects/Claude"
+                     },
+                     {
+                         "name":  "keeta-ia-trader",
+                         "path":  "/home/hike-/ClaudeProjects/keeta-ia-trader"
+                     }
+                 ]
+}
