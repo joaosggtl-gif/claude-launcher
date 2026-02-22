@@ -3,9 +3,15 @@ Add-Type -AssemblyName System.Drawing
 
 # --- Config ---
 # Support both \\wsl$ and \\wsl.localhost paths
-$wslRoot = if (Test-Path "\\wsl.localhost\Ubuntu") { "\\wsl.localhost\Ubuntu" } else { "\\wsl$\Ubuntu" }
-$configPath = "$wslRoot\home\hike-\.claude-launcher\projects.json"
-$projectsDir = "$wslRoot\home\hike-\ClaudeProjects"
+if (Test-Path "\\wsl.localhost\Ubuntu") {
+    $script:wslRoot = "\\wsl.localhost\Ubuntu"
+} elseif (Test-Path "\\wsl$\Ubuntu") {
+    $script:wslRoot = "\\wsl$\Ubuntu"
+} else {
+    $script:wslRoot = "\\wsl$\Ubuntu"
+}
+$configPath = "$script:wslRoot\home\hike-\.claude-launcher\projects.json"
+$projectsDir = "$script:wslRoot\home\hike-\ClaudeProjects"
 $wslProjectsDir = "/home/hike-/ClaudeProjects"
 $script:projects = New-Object System.Collections.ArrayList
 
@@ -212,8 +218,8 @@ $btnAdd.Add_Click({
         if (-not $newPath.StartsWith("/")) {
             [System.Windows.Forms.MessageBox]::Show("O caminho deve ser absoluto (comecar com /).`nExemplo: /home/hike-/meu-projeto", "Erro", "OK", "Error")
         } else {
-            $wslCheck = "$wslRoot" + ($newPath -replace "/", "\")
-            if (-not (Test-Path $wslCheck)) {
+            $wslTest = wsl.exe -d Ubuntu -- test -d "$newPath" 2>$null
+            if ($LASTEXITCODE -ne 0) {
                 [System.Windows.Forms.MessageBox]::Show("Pasta nao encontrada: $newPath`nVerifique se o caminho existe no WSL.", "Erro", "OK", "Error")
             } else {
                 $newProject = [PSCustomObject]@{
@@ -263,8 +269,8 @@ $btnLaunch.Add_Click({
             [System.Windows.Forms.MessageBox]::Show("Caminho invalido (nao e absoluto): $projPath`nRemova e adicione o projeto novamente.", "Erro", "OK", "Error")
             return
         }
-        $wslPath = "$wslRoot" + ($projPath -replace "/", "\")
-        if (-not (Test-Path $wslPath)) {
+        $wslTest = wsl.exe -d Ubuntu -- test -d "$projPath" 2>$null
+        if ($LASTEXITCODE -ne 0) {
             [System.Windows.Forms.MessageBox]::Show("Pasta nao encontrada: $projPath`nVerifique se o projeto existe no WSL.", "Erro", "OK", "Error")
             return
         }
