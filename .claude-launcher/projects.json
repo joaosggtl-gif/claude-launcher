@@ -39,6 +39,10 @@
                      {
                          "name":  "keeta-ia-trader",
                          "path":  "/home/hike-/ClaudeProjects/keeta-ia-trader"
+                     },
+                     {
+                         "name":  "ClaudeProjects",
+                         "path":  "/home/hike-/ClaudeProjects/ClaudeProjects"
                      }
                  ]
 }
